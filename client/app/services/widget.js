@@ -73,7 +73,7 @@ function WidgetFactory($http, $location, Query, Visualization, dashboardGridOpti
   class WidgetService {
     static MappingType = ParameterMappingType;
 
-    constructor(data) {
+    constructor(data, darkTheme = false) {
       // Copy properties
       each(data, (v, k) => {
         this[k] = v;
@@ -91,6 +91,7 @@ function WidgetFactory($http, $location, Query, Visualization, dashboardGridOpti
       if (this.options.position.sizeY < 0) {
         this.options.position.autoHeight = true;
       }
+      this.visualization.options.darkTheme = darkTheme;
 
       this.updateOriginalPosition();
     }
