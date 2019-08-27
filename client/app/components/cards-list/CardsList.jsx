@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import EmptyState from '@/components/items-list/components/EmptyState';
 
+import './CardsList.less';
+
 const { Search } = Input;
 
 export default class CardsList extends React.Component {
@@ -71,7 +73,7 @@ export default class CardsList extends React.Component {
         )}
         {isEmpty(filteredItems) ? (<EmptyState className="" />) : (
           <div className="row">
-            <div className="col-lg-12 d-inline-flex flex-wrap">
+            <div className="col-lg-12 d-inline-flex flex-wrap visual-card-list">
               {filteredItems.map(item => this.renderListItem(item))}
             </div>
           </div>

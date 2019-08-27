@@ -3,6 +3,8 @@ import logging
 from dateutil import parser
 import requests
 
+from six import text_type
+
 from redash import settings
 from redash.utils import json_loads
 
@@ -53,6 +55,7 @@ class NotSupported(Exception):
 
 
 class BaseQueryRunner(object):
+    deprecated = False
     noop_query = None
 
     def __init__(self, configuration):
@@ -271,7 +274,18 @@ def import_query_runners(query_runner_imports):
         __import__(runner_import)
 
 
-def guess_type(string_value):
+def guess_type(value):
+    if isinstance(value, bool):
+        return TYPE_BOOLEAN
+    elif isinstance(value, int):
+        return TYPE_INTEGER
+    elif isinstance(value, float):
+        return TYPE_FLOAT
+
+    return guess_type_from_string(value)
+
+
+def guess_type_from_string(string_value):
     if string_value == '' or string_value is None:
         return TYPE_STRING
 
@@ -287,7 +301,7 @@ def guess_type(string_value):
     except (ValueError, OverflowError):
         pass
 
-    if unicode(string_value).lower() in ('true', 'false'):
+    if text_type(string_value).lower() in ('true', 'false'):
         return TYPE_BOOLEAN
 
     try:
